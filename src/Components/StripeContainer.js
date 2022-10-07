@@ -6,7 +6,7 @@ import React from "react";
 const PUBLIC_KEY= "pk_test_51Lq9jSCojvtnk7Y3RzKl5pziv6otHqvu1n2AK04LoCrNp7ANG6EOfobpvuFen1jT6lVTtzYxwHZUw6pvQuJfot1H00MCH2HjiT"
 const strieTestPromise = loadStripe(PUBLIC_KEY)
 
-export default Stripe_Contation= ()=>{
+export default function StripeContainer (){
     return (
     <>
     <Elements stripe = {strieTestPromise}>
