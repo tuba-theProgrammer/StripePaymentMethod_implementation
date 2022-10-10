@@ -2,6 +2,7 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import React from "react";
+import { TextField } from "@mui/material";
 import '../App.css'
 
 const CARD_OPTIONS = {
@@ -27,66 +28,62 @@ const CARD_OPTIONS = {
 
 export default function PaymentForm(){
 
+
+  
+
+
    const [success,setSuccess] = React.useState(false)
    const stripe = useStripe()
    const elements = useElements()
    const [email, setEmail] = React.useState('');
+   const [name, setName] = React.useState('');
+
 
    const handleSubmit = async (e)=>{
 
     e.preventDefault()
+    try{
+      
+   }catch(err){
 
-    if(!stripe||!elements){
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
-    const {error,paymentMethod} = await stripe.createPaymentMethod({
-        type:"card",
-        card: elements.getElement(CardElement),
-        billing_details:{
-                email:email
-        }
-    })
-
-     if(!error){
-        try{
-           const {id} = paymentMethod
-           const response = await axios.post("http://localhost:3001/payment",{
-            amount:1000,
-            id,
-            email
-           })
-         
-           if(response.data.success){
-            console.log("successful payment")
-            setSuccess(true)
-             // Show a success message to your customer
-        // There's a risk of the customer closing the window before callback
-        // execution. Set up a webhook or plugin to listen for the
-        // payment_intent.succeeded event that handles any business critical
-        // post-payment actions.
-           }
-
-        }catch(error){
-            console.log("Error",error)
-        }
-     }else{
-        console.log(error.message)
-     }
-
+   }
+    
    }
     
    return(<>
      {!success?
      <form onSubmit={handleSubmit}>
+        <TextField
+          label='Email'
+          id='outlined-email-input'
+          helperText={`Email you'll recive updates and receipts on`}
+          margin='normal'
+          variant='outlined'
+          type='email'
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+        />
+
+<TextField
+          label='Name'
+          id='outlined-name-input'
+          margin='normal'
+          variant='outlined'
+          type='text'
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          fullWidth
+        />
        <fieldset className="FormGroup">
           <div className="FormRow"> 
           <CardElement options={CARD_OPTIONS}/>
           </div>
        </fieldset>
         <button>
-         Pay
+         Subcribe
         </button>
      </form>
    :
